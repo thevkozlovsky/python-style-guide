@@ -34,7 +34,7 @@ Python Style Guide
     * [Strings](#strings)
     * [Files and Sockets](#files-and-sockets)
     * [TODO Comments](#todo-comments)
-    * [Imports formatting](imports-formatting)
+    * [Imports formatting](#imports-formatting)
     * [Statements](#statements)
     * [Access Control](#access-control)
     * [Naming](#naming)
