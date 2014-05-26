@@ -1,6 +1,11 @@
 Python Style Guide
 ==================
     
+    1. [Lint](#lint)
+    1. [Imports](#imports)
+    1. [Packages](#packages)
+    
+    
 ## Python Language Rules
 
 ### Lint
