@@ -16,7 +16,7 @@ Python Style Guide
     * [Default Argument Values](#default-argument-values)
     * [Properties](#properties)
     * [True/False evaluations](#truefalse-evaluations)
-    * [Deprecated Language Features](deprecated-language-features)
+    * [Deprecated Language Features](#deprecated-language-features)
     * [Lexical Scoping](#lexical-scoping)
     * [Function and Method Decorators](#function-and-method-decorators)
     * [Threading](#threading)
