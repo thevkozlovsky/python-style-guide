@@ -22,7 +22,23 @@ Python Style Guide
     * [Threading](#threading)
     * [Power Features](#power-features)
   * [Python Style Rules](#python-style-rues)
-    
+    * [Semicolons](#semicolons)
+    * [Line length](#line-length)
+    * [Parentheses](#parentheses)
+    * [Indentation](#indentation)
+    * [Blank Lines](#blank-lines)
+    * [Whitespace](#whitespace)
+    * [Shebang Line](#shebang-line)
+    * [Comments](#comments)
+    * [Classes](#classes)
+    * [Strings](#strings)
+    * [Files and Sockets](#files-and-sockets)
+    * [TODO Comments](#todo-comments)
+    * [Imports formatting](imports-formatting)
+    * [Statements](#statements)
+    * [Access Control](#access-control)
+    * [Naming](#naming)
+    * [Main](#main)
     
 ## Python Language Rules
 
@@ -375,3 +391,136 @@ Avoid these features.
 
 
 ## Python Style Rules
+
+### Semicolons
+
+Do not terminate your lines with semi-colons and do not use semi-colons to put two commands on the same line.
+
+==========
+
+
+
+### Line length
+
+Maximum line length is 80 characters.
+
+==========
+
+
+
+### Parentheses
+
+Use parentheses sparingly.
+
+==========
+
+
+
+### Indentation
+
+Indent your code blocks with 4 spaces.
+
+==========
+
+
+
+### Blank Lines
+
+Two blank lines between top-level definitions, one blank line between method definitions.
+
+==========
+
+
+
+### Whitespace
+
+Follow standard typographic rules for the use of spaces around punctuation.
+
+==========
+
+
+
+### Shebang Line
+
+Most `.py` files do not need to start with a `#!` line. Start the main file of a program with `#!/usr/bin/python` with an optional single digit 2 or 3 suffix per [PEP-394](http://www.python.org/dev/peps/pep-0394/).
+
+==========
+
+
+
+### Comments
+
+Be sure to use the right style for module, function, method and in-line comments.
+
+==========
+
+
+
+### Classes
+
+If a class inherits from no other base classes, explicitly inherit from `object`. This also applies to nested classes.
+
+==========
+
+
+### Strings
+
+Use the `format` method or the `%` operator for formatting strings, even when the parameters are all strings. Use your best judgement to decide between `+` and `%` (or `format`) though.
+
+==========
+
+
+
+### Files and Sockets
+
+Explicitly close files and sockets when done with them.
+
+==========
+
+
+
+### TODO Comments
+
+Use `TODO` comments for code that is temporary, a short-term solution, or good-enough but not perfect.
+
+==========
+
+
+### Imports formatting
+
+Imports should be on separate lines.
+
+==========
+
+
+
+### Statements
+
+Generally only one statement per line.
+
+==========
+
+
+
+### Access Control
+
+If an accessor function would be trivial you should use public variables instead of accessor functions to avoid the extra cost of function calls in Python. When more functionality is added you can use `property` to keep the syntax consistent.
+
+==========
+
+
+
+### Naming
+
+`module_name`, `package_name`, `ClassName`, `method_name`, `ExceptionName`, `function_name`, `GLOBAL_CONSTANT_NAME`, `global_var_name`, `instance_var_name`, `function_parameter_name`, `local_var_name`.
+
+==========
+
+
+
+### Main
+
+Even a file meant to be used as a script should be importable and a mere import should not have the side effect of executing the script's main functionality. The main functionality should be in a main() function.
+
+==========
+
