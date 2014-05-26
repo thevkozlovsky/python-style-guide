@@ -64,7 +64,7 @@ Unused argument warnings can be suppressed by using `_' as the identifier for th
         return a
 ```
 
-
+==========
 
 ### Imports
 
@@ -98,6 +98,8 @@ echo.EchoFilter(input, output, delay=0.7, atten=4)
 
 Do not use relative names in imports. Even if the module is in the same package, use the full package name. This helps prevent unintentionally importing a package twice.
 
+==========
+
 
 
 ### Packages
@@ -108,6 +110,8 @@ Import each module using the full pathname location of the module.
 #### Pros
 #### Cons
 #### Decision
+
+==========
 
 
 
@@ -120,6 +124,8 @@ Exceptions are allowed but must be used carefully.
 #### Cons
 #### Decision
 
+==========
+
 
 
 ### Global variables
@@ -130,6 +136,8 @@ Avoid global variables.
 #### Pros
 #### Cons
 #### Decision
+
+==========
 
 
 
@@ -142,6 +150,7 @@ Nested/local/inner classes and functions are fine.
 #### Cons
 #### Decision
 
+==========
 
 
 
@@ -154,6 +163,8 @@ Okay to use for simple cases.
 #### Cons
 #### Decision
 
+==========
+
 
 
 ### Default Iterators and Operators
@@ -164,6 +175,8 @@ Use default iterators and operators for types that support them, like lists, dic
 #### Pros
 #### Cons
 #### Decision
+
+==========
 
 
 
@@ -176,6 +189,8 @@ Use generators as needed.
 #### Cons
 #### Decision
 
+==========
+
 
 
 ### Lambda Functions
@@ -186,6 +201,8 @@ Okay for one-liners.
 #### Pros
 #### Cons
 #### Decision
+
+==========
 
 
 
@@ -198,6 +215,8 @@ Okay for one-liners.
 #### Cons
 #### Decision
 
+==========
+
 
 
 ### Default Argument Values
@@ -208,6 +227,8 @@ Okay in most cases.
 #### Pros
 #### Cons
 #### Decision
+
+==========
 
 
 
@@ -220,6 +241,8 @@ Use properties for accessing or setting data where you would normally have used 
 #### Cons
 #### Decision
 
+==========
+
 
 
 ### True/False evaluations
@@ -230,6 +253,8 @@ Use the "implicit" false if at all possible.
 #### Pros
 #### Cons
 #### Decision
+
+==========
 
 
 
@@ -242,6 +267,8 @@ Use string methods instead of the `string` module where possible. Use function c
 #### Cons
 #### Decision
 
+==========
+
 
 
 ### Lexical Scoping
@@ -252,6 +279,8 @@ Okay to use.
 #### Pros
 #### Cons
 #### Decision
+
+==========
 
 
 
@@ -264,6 +293,8 @@ Use decorators judiciously when there is a clear advantage.
 #### Cons
 #### Decision
 
+==========
+
 
 
 ### Threading
@@ -274,6 +305,8 @@ Do not rely on the atomicity of built-in types.
 #### Pros
 #### Cons
 #### Decision
+
+==========
 
 
 
