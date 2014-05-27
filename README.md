@@ -217,10 +217,11 @@ Has the potential to change module behavior during the import, because assignmen
 
 Avoid global variables in favor of class variables. Some exceptions are:
 
- * Default options for scripts.
- * Module-level constants. For example: `PI = 3.14159`. Constants should be named using all caps with underscores; see [Naming](#naming) below.
- * It is sometimes useful for globals to cache values needed or returned by functions.
- * If needed, globals should be made internal to the module and accessed through public module level functions; see [Naming](#naming) below.
+  * Default options for scripts.
+  * Module-level constants. For example: `PI = 3.14159`. Constants should be named using all caps with underscores; see [Naming](#naming) below.
+  * It is sometimes useful for globals to cache values needed or returned by functions.
+  * If needed, globals should be made internal to the module and accessed through public module level functions; see [Naming](#naming) below.
+  
 ==========
 
 
@@ -230,9 +231,20 @@ Avoid global variables in favor of class variables. Some exceptions are:
 Nested/local/inner classes and functions are fine.
 
 #### Definition
+
+A class can be defined inside of a method, function, or class. A function can be defined inside a method or function. Nested functions have read-only access to variables defined in enclosing scopes.
+
 #### Pros
+
+Allows definition of utility classes and functions that are only used inside of a very limited scope. Very [ADT](http://en.wikipedia.org/wiki/Abstract_data_type)-y.
+
 #### Cons
+
+Instances of nested or local classes cannot be pickled.
+
 #### Decision
+
+They are fine.
 
 ==========
 
@@ -243,10 +255,57 @@ Nested/local/inner classes and functions are fine.
 Okay to use for simple cases.
 
 #### Definition
+
+List comprehensions and generator expressions provide a concise and efficient way to create lists and iterators without resorting to the use of `map()`, `filter()`, or `lambda`.
+
 #### Pros
+
+Simple list comprehensions can be clearer and simpler than other list creation techniques. Generator expressions can be very efficient, since they avoid the creation of a list entirely.
+
 #### Cons
+
+Complicated list comprehensions or generator expressions can be hard to read.
+
 #### Decision
 
+Okay to use for simple cases. Each portion must fit on one line: mapping expression, `for` clause, filter expression. Multiple `for` clauses or filter expressions are not permitted. Use loops instead when things get more complicated.
+
+**Yes**
+```python
+  result = []
+  for x in range(10):
+      for y in range(5):
+          if x * y > 10:
+              result.append((x, y))
+
+  for x in xrange(5):
+      for y in xrange(5):
+          if x != y:
+              for z in xrange(5):
+                  if y != z:
+                      yield (x, y, z)
+
+  return ((x, complicated_transform(x))
+          for x in long_generator_function(parameter)
+          if x is not None)
+
+  squares = [x * x for x in range(10)]
+
+  eat(jelly_bean for jelly_bean in jelly_beans
+      if jelly_bean.color == 'black')
+```
+
+**No**
+```python
+  result = [(x, y) for x in range(10) for y in range(5) if x * y > 10]
+
+  return ((x, y, z)
+          for x in xrange(5)
+          for y in xrange(5)
+          if x != y
+          for z in xrange(5)
+          if y != z)
+```
 ==========
 
 
@@ -256,10 +315,36 @@ Okay to use for simple cases.
 Use default iterators and operators for types that support them, like lists, dictionaries, and files.
 
 #### Definition
+
+Container types, like dictionaries and lists, define default iterators and membership test operators ("in" and "not in").
+
 #### Pros
+
+The default iterators and operators are simple and efficient. They express the operation directly, without extra method calls. A function that uses default operators is generic. It can be used with any type that supports the operation.
+
 #### Cons
+
+You can't tell the type of objects by reading the method names (e.g. has_key() means a dictionary). This is also an advantage.
+
 #### Decision
 
+Use default iterators and operators for types that support them, like lists, dictionaries, and files. The built-in types define iterator methods, too. Prefer these methods to methods that return lists, except that you should not mutate a container while iterating over it.
+
+**Yes**
+```python
+for key in adict: ...
+if key not in adict: ...
+if obj in alist: ...
+for line in afile: ...
+for k, v in dict.iteritems(): ...
+```
+
+**No**
+```python
+for key in adict.keys(): ...
+if not adict.has_key(key): ...
+for line in afile.readlines(): ...
+```
 ==========
 
 
