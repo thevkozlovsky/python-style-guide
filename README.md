@@ -555,12 +555,92 @@ Use the "implicit" false if at all possible.
 
 ### Deprecated Language Features
 
+
+
+#### Definition
+
+Python evaluates certain values as `false` when in a boolean context. A quick "rule of thumb" is that all "empty" values are considered `false` so `0, None, [], {}, ''` all evaluate as `false` in a boolean context.
+
+#### Pros
+
+Conditions using Python booleans are easier to read and less error-prone. In most cases, they're also faster.
+
+#### Cons
+
+May look strange to C/C++ developers.
+
+#### Decision
+
+Use the "implicit" false if at all possible, e.g., `if foo:` rather than `if foo != []:`. There are a few caveats that you should keep in mind though:
+
+* Never use `==` or `!=` to compare singletons like None. Use `is` or `is not`.
+* Beware of writing `if x:` when you really mean `if x is not None:`—e.g., when testing whether a variable or argument that defaults to `None` was set to some other value. The other value might be a value that's false in a boolean context!
+* Never compare a boolean variable to `False` using `==`. Use `if not x:` instead. If you need to distinguish `False` from `None` then chain the expressions, such as `if not x and x is not None:`.
+* For sequences (strings, lists, tuples), use the fact that empty sequences are false, so `if not seq:` or `if seq:` is preferable to `if len(seq):` or `if not len(seq):`.
+* When handling integers, implicit false may involve more risk than benefit (i.e., accidentally handling `None` as 0). You may compare a value which is known to be an integer (and is not the result of `len()`) against the integer 0.
+
+**Yes**
+```python
+if not users:
+    print 'no users'
+
+if foo == 0:
+    self.handle_zero()
+
+if i % 10 == 0:
+    self.handle_multiple_of_ten()
+```
+         
+**No**
+```python
+if len(users) == 0:
+    print 'no users'
+
+if foo is not None and not foo:
+    self.handle_zero()
+
+if not i % 10:
+    self.handle_multiple_of_ten()
+```
+* Note that `'0'` (i.e., 0 as string) evaluates to true.
+
+==========
+
+
+
+### Deprecated Language Features
+
 Use string methods instead of the `string` module where possible. Use function call syntax instead of `apply`. Use list comprehensions and `for` loops instead of `filter` and `map` when the function argument would have been an inlined lambda anyway. Use `for` loops instead of `reduce`.
 
 #### Definition
+
+Current versions of Python provide alternative constructs that people find generally preferable.
+
 #### Pros
 #### Cons
 #### Decision
+
+We do not use any Python version which does not support these features, so there is no reason not to use the new styles.
+
+**Yes**
+```python
+words = foo.split(':')
+
+[x[1] for x in my_list if x[2] == 5]
+
+map(math.sqrt, data)    # Ok. No inlined lambda expression.
+
+fn(*args, **kwargs)
+```
+
+**No**
+```python
+words = string.split(foo, ':')
+
+map(lambda x: x[1], filter(lambda x: x[2] == 5, my_list))
+
+apply(fn, args, kwargs)
+```
 
 ==========
 
@@ -571,9 +651,46 @@ Use string methods instead of the `string` module where possible. Use function c
 Okay to use.
 
 #### Definition
+
+A nested Python function can refer to variables defined in enclosing functions, but can not assign to them. Variable bindings are resolved using lexical scoping, that is, based on the static program text. Any assignment to a name in a block will cause Python to treat all references to that name as a local variable, even if the use precedes the assignment. If a global declaration occurs, the name is treated as a global variable.
+
+An example of the use of this feature is:
+
+```python
+def get_adder(summand1):
+    """Returns a function that adds numbers to a given number."""
+    def adder(summand2):
+        return summand1 + summand2
+
+    return adder
+```
+
 #### Pros
+
+Often results in clearer, more elegant code. Especially comforting to experienced Lisp and Scheme (and Haskell and ML and …) programmers.
+
 #### Cons
+
+Can lead to confusing bugs. Such as this example based on [PEP-0227](http://www.python.org/dev/peps/pep-0227/):
+
+```python
+i = 4
+def foo(x):
+    def bar():
+        print i,
+    # ...
+    # A bunch of code here
+    # ...
+    for i in x:  # Ah, i *is* local to Foo, so this is what Bar sees
+        print i,
+    bar()
+```
+
+So `foo([1, 2, 3])` will print `1 2 3 3`, not `1 2 3 4`.
+
 #### Decision
+
+Okay to use.
 
 ==========
 
@@ -583,23 +700,17 @@ Okay to use.
 
 Use decorators judiciously when there is a clear advantage.
 
-#### Definition
-#### Pros
-#### Cons
-#### Decision
 
 ==========
-
 
 
 ### Threading
 
 Do not rely on the atomicity of built-in types.
 
-#### Definition
-#### Pros
-#### Cons
-#### Decision
+While Python's built-in data types such as dictionaries appear to have atomic operations, there are corner cases where they aren't atomic (e.g. if `__hash__` or `__eq__` are implemented as Python methods) and their atomicity should not be relied upon. Neither should you rely on atomic variable assignment (since this in turn depends on dictionaries).
+
+Use the Queue module's `Queue` data type as the preferred way to communicate data between threads. Otherwise, use the threading module and its locking primitives. Learn about the proper use of condition variables so you can use `threading.Condition` instead of using lower-level locks.
 
 ==========
 
@@ -610,10 +721,20 @@ Do not rely on the atomicity of built-in types.
 Avoid these features.
 
 #### Definition
+
+Python is an extremely flexible language and gives you many fancy features such as metaclasses, access to bytecode, on-the-fly compilation, dynamic inheritance, object reparenting, import hacks, reflection, modification of system internals, etc.
+
 #### Pros
+
+These are powerful language features. They can make your code more compact.
+
 #### Cons
+
+It's very tempting to use these "cool" features when they're not absolutely necessary. It's harder to read, understand, and debug code that's using unusual features underneath. It doesn't seem that way at first (to the original author), but when revisiting the code, it tends to be more difficult than code that is longer but is straightforward.
+
 #### Decision
 
+Avoid these features in your code.
 
 
 ## Python Style Rules
