@@ -354,9 +354,20 @@ for line in afile.readlines(): ...
 Use generators as needed.
 
 #### Definition
+
+A generator function returns an iterator that yields a value each time it executes a yield statement. After it yields a value, the runtime state of the generator function is suspended until the next value is needed.
+
 #### Pros
+
+Simpler code, because the state of local variables and control flow are preserved for each call. A generator uses less memory than a function that creates an entire list of values at once.
+
 #### Cons
+
+None.
+
 #### Decision
+
+Fine. Use "Yields:" rather than "Returns:" in the doc string for generator functions.
 
 ==========
 
@@ -367,9 +378,22 @@ Use generators as needed.
 Okay for one-liners.
 
 #### Definition
+
+Lambdas define anonymous functions in an expression, as opposed to a statement. They are often used to define callbacks or operators for higher-order functions like `map()` and `filter()`.
+
 #### Pros
+
+Convenient.
+
 #### Cons
+
+Harder to read and debug than local functions. The lack of names means stack traces are more difficult to understand. Expressiveness is limited because the function may only contain an expression.
+
 #### Decision
+
+Okay to use them for one-liners. If the code inside the lambda function is any longer than 60–80 chars, it's probably better to define it as a regular (nested) function.
+
+For common operations like multiplication, use the functions from the `operator` module instead of lambda functions. For example, prefer operator.mul to `lambda x, y: x * y`.
 
 ==========
 
@@ -380,9 +404,20 @@ Okay for one-liners.
 Okay for one-liners.
 
 #### Definition
+
+Conditional expressions are mechanisms that provide a shorter syntax for if statements. For example: `x = 1 if cond else 2`.
+
 #### Pros
+
+Shorter and more convenient than an if statement.
+
 #### Cons
+
+May be harder to read than an if statement. The condition may be difficult to locate if the expression is long.
+
 #### Decision
+
+Okay to use for one-liners. In other cases prefer to use a complete if statement.
 
 ==========
 
@@ -393,9 +428,39 @@ Okay for one-liners.
 Okay in most cases.
 
 #### Definition
+
+You can specify values for variables at the end of a function's parameter list, e.g., `def foo(a, b=0)`:. If `foo` is called with only one argument, `b` is set to `0`. If it is called with two arguments, `b` has the value of the second argument.
+
 #### Pros
+
+Often you have a function that uses lots of default values, but—rarely—you want to override the defaults. Default argument values provide an easy way to do this, without having to define lots of functions for the rare exceptions. Also, Python does not support overloaded methods/functions and default arguments are an easy way of "faking" the overloading behavior.
+
 #### Cons
+
+Default arguments are evaluated once at module load time. This may cause problems if the argument is a mutable object such as a list or a dictionary. If the function modifies the object (e.g., by appending an item to a list), the default value is modified.
+
 #### Decision
+
+Okay to use with the following caveat:
+
+Do not use mutable objects as default values in the function or method definition.
+
+**Yes**
+```python
+def foo(a, b=None):
+  if b is None:
+    b = []
+```
+
+**No**
+```python
+def foo(a, b=[]):
+  ...
+def foo(a, b=time.time()):  # The time the module was loaded???
+  ...
+def foo(a, b=FLAGS.my_thing):  # sys.argv has not yet been parsed...
+  ...
+```
 
 ==========
 
