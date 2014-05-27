@@ -217,10 +217,10 @@ Has the potential to change module behavior during the import, because assignmen
 
 Avoid global variables in favor of class variables. Some exceptions are:
 
-* Default options for scripts.
-* Module-level constants. For example: `PI = 3.14159`. Constants should be named using all caps with underscores; see [Naming](#naming) below.
-* It is sometimes useful for globals to cache values needed or returned by functions.
-* If needed, globals should be made internal to the module and accessed through public module level functions; see [Naming](#naming) below.
+ * Default options for scripts.
+ * Module-level constants. For example: `PI = 3.14159`. Constants should be named using all caps with underscores; see [Naming](#naming) below.
+ * It is sometimes useful for globals to cache values needed or returned by functions.
+ * If needed, globals should be made internal to the module and accessed through public module level functions; see [Naming](#naming) below.
 ==========
 
 
